@@ -1,0 +1,28 @@
+import { useCallback } from "react";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import {
+  selectError,
+  setError,
+} from "../../../store/television/televisionSlice";
+import { Notification } from "../notification/Notification";
+
+const TRANSITION_DURATION = 300;
+
+export const NotificationWrapper = () => {
+  const error = useAppSelector(selectError);
+  const dispatch = useAppDispatch();
+
+  const removeNotification = useCallback(() => {
+    window.setTimeout(() => dispatch(setError(null)), TRANSITION_DURATION);
+  }, [dispatch]);
+
+  return error ? (
+    <Notification
+      error={error}
+      removeNotification={removeNotification}
+      transitionDuration={TRANSITION_DURATION}
+    ></Notification>
+  ) : (
+    <></>
+  );
+};
